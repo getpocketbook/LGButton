@@ -136,6 +136,12 @@ public class LGButton: UIControl {
         }
     }
     
+    public var attributedTitleString: NSAttributedString = NSAttributedString(string: "") {
+        didSet{
+            setupView()
+        }
+    }
+    
     @IBInspectable public var titleFontName: String? {
         didSet{
             setupView()
@@ -434,13 +440,18 @@ public class LGButton: UIControl {
     }
     
     fileprivate func setupTitle() {
-        titleLbl.isHidden = titleString.isEmpty
-        titleLbl.text = titleString
         titleLbl.textColor = titleColor
         if titleFontName != nil {
             titleLbl.font = UIFont.init(name:titleFontName! , size:titleFontSize)
         }else{
             titleLbl.font = UIFont.systemFont(ofSize: titleFontSize)
+        }
+        
+        titleLbl.isHidden = titleString.isEmpty && attributedTitleString.string.isEmpty
+        if !attributedTitleString.string.isEmpty {
+            titleLbl.attributedText = attributedTitleString
+        } else {
+            titleLbl.text = titleString
         }
     }
     
